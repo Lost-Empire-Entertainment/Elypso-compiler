@@ -10,7 +10,7 @@ Note: The main and indev branch licenses apply only to their respective branches
    - "Hub" refers to the program that is used to launch the Engine.
    - "Game" refers to the Game that is compiled by the Engine and is provided by Lost Empire Entertainment in its original form.
    - "Engine library" refers to the .lib file used for the Game to avoid rewriting engine code.
-   - "Elypso Compiler" refers to the UI-based compiler used for compiling the Hub, Engine and Engine library from source code and CMakeLists.txt files.
+   - "Compiler" refers to the UI-based compiler used for compiling the Hub, Engine and Engine library from source code and CMakeLists.txt files.
    - "External Content" refers to any content not created and owned by Lost Empire Entertainment or the End User.
    - "End User" refers to the individual or entity using the Engine, Hub, Compiler, Engine library, Game, Content and External Content.
    - "Lost Empire Entertainment" refers to the entity distributing the Engine, Hub, Game, Compiler, Engine library, Content and External Content under this license.
@@ -28,14 +28,14 @@ Note: The main and indev branch licenses apply only to their respective branches
 
 4. Restrictions
 
-   - You may not sublicense, sell, rent or lease Elypso Compiler to any third party without the prior written consent of Lost Empire Entertainment.
-   - You may not remove or alter any licenses, copyright notices, trademarks, or other proprietary rights notices contained in Elypso Compiler.
-   - You may not use the name, logo, or trademarks of Lost Empire Entertainment to endorse or promote products derived from Elypso Compiler without prior written permission.
-   - The use of Elypso Compiler in violation of applicable laws or regulations, including but not limited to unauthorized copying, distribution, modification if it goes against its license, or any other illegal activities, is strictly prohibited.
+   - You may not sublicense, sell, rent or lease Compiler to any third party without the prior written consent of Lost Empire Entertainment.
+   - You may not remove or alter any licenses, copyright notices, trademarks, or other proprietary rights notices contained in Compiler.
+   - You may not use the name, logo, or trademarks of Lost Empire Entertainment to endorse or promote products derived from Compiler without prior written permission.
+   - The use of Compiler in violation of applicable laws or regulations, including but not limited to unauthorized copying, distribution, modification if it goes against its license, or any other illegal activities, is strictly prohibited.
 
 6. Proprietary Rights
 
-   Elypso Compiler and all worldwide copyrights, trade secrets, and other intellectual property rights therein are the exclusive property of Lost Empire Entertainment. All rights not expressly granted herein are reserved by Lost Empire Entertainment.
+   Compiler and all worldwide copyrights, trade secrets, and other intellectual property rights therein are the exclusive property of Lost Empire Entertainment. All rights not expressly granted herein are reserved by Lost Empire Entertainment.
 
 7. External Content Rights
 
@@ -49,11 +49,11 @@ Note: The main and indev branch licenses apply only to their respective branches
 
 8. Disclaimer of Warranty
 
-   ELYPSO COMPILER IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, LOST EMPIRE ENTERTAINMENT DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. LOST EMPIRE ENTERTAINMENT DOES NOT WARRANT THAT ELYPSO COMPILER WILL BE ERROR-FREE OR UNINTERRUPTED.
+   COMPILER IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, LOST EMPIRE ENTERTAINMENT DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. LOST EMPIRE ENTERTAINMENT DOES NOT WARRANT THAT COMPILER WILL BE ERROR-FREE OR UNINTERRUPTED.
 
 9. Termination
 
-   This license is effective until terminated. Your rights under this license will terminate automatically without notice by Lost Empire Entertainment if you fail to comply with any term(s) of this license. Upon termination of this license, you shall cease all use of Elypso Compiler and destroy all copies, full or partial, in your possession or control.
+   This license is effective until terminated. Your rights under this license will terminate automatically without notice by Lost Empire Entertainment if you fail to comply with any term(s) of this license. Upon termination of this license, you shall cease all use of Compiler and destroy all copies, full or partial, in your possession or control.
 
 10. Governing Law
 
@@ -61,8 +61,8 @@ Note: The main and indev branch licenses apply only to their respective branches
 
 11. Entire Agreement
 
-   This license constitutes the entire agreement between you and Lost Empire Entertainment concerning Elypso Compiler and supersedes all prior or contemporaneous agreements, representations, and understandings, whether oral or written.
+   This license constitutes the entire agreement between you and Lost Empire Entertainment concerning Compiler and supersedes all prior or contemporaneous agreements, representations, and understandings, whether oral or written.
 
 11. Modifications to this License
 
-   Lost Empire Entertainment reserves the right to modify this license at any time. Any such modifications will be effective immediately upon posting on Lost Empire Entertainment's website or other designated location. You are responsible for regularly reviewing the license for updates. Your continued use of Elypso Compiler after the posting of any modifications constitutes acceptance of the modified license terms.
+   Lost Empire Entertainment reserves the right to modify this license at any time. Any such modifications will be effective immediately upon posting on Lost Empire Entertainment's website or other designated location. You are responsible for regularly reviewing the license for updates. Your continued use of Compiler after the posting of any modifications constitutes acceptance of the modified license terms.
