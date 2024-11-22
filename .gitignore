@@ -1,0 +1,4 @@
+# Compiler ignored files and folders
+build/
+.vs/
+out/
