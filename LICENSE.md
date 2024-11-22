@@ -6,19 +6,15 @@ Note: The main and indev branch licenses apply only to their respective branches
 
 1. Definitions
 
-   - "Engine" refers to Elypso Engine, the main program used for creating Games.
-   - "Hub" refers to the program that is used to launch the Engine.
-   - "Game" refers to the Game that is compiled by the Engine and is provided by Lost Empire Entertainment in its original form.
-   - "Engine library" refers to the .lib file used for the Game to avoid rewriting engine code.
-   - "Elypso Compiler" refers to the UI-based compiler used for compiling the Hub, Engine and Engine library from source code and CMakeLists.txt files.
+   - "Elypso Compiler"  refers to the UI-based compiler used for compiling Elypso Hub, Elypso Engine and Engine library from source code and CMakeLists.txt files.
    - "External Content" refers to any content not created and owned by Lost Empire Entertainment or the End User.
-   - "End User" refers to the individual or entity using the Engine, Hub, Compiler, Engine library, Game, Content and External Content.
-   - "Lost Empire Entertainment" refers to the entity distributing the Engine, Hub, Game, Compiler, Engine library, Content and External Content under this license.
+   - "End User" refers to the individual or entity using Elypso Compiler, Engine library and External Content.
+   - "Lost Empire Entertainment" refers to the entity distributing Elypso Compiler and External Content under this license.
    - "Jurisdiction" refers to the legal jurisdiction in which Lost Empire Entertainment operates.
 
 2. Grant of License
 
-   Subject to the terms and conditions of this license, Lost Empire Entertainment hereby grants you a worldwide, royalty-free, non-exclusive, non-transferable license to use, reproduce, modify, and distribute the Compiler and External Content for any lawful purpose, provided that such uses, modifications, and distributions follow their respective licenses and do not violate any applicable laws or regulations.
+   Subject to the terms and conditions of this license, Lost Empire Entertainment hereby grants you a worldwide, royalty-free, non-exclusive, non-transferable license to use, reproduce, modify, and distribute Elypso Compiler and External Content for any lawful purpose, provided that such uses, modifications, and distributions follow their respective licenses and do not violate any applicable laws or regulations.
 
 3. Scope of License
 
