@@ -2,8 +2,6 @@ Elypso Compiler Proprietary License
 
 Version 1.0
 
-Note: The main and indev branch licenses apply only to their respective branches and cannot be mixed. The indev license may change during development, while the main branch updates with major releases.
-
 1. Definitions
 
    - "Elypso Compiler"  refers to the UI-based compiler used for compiling Elypso Hub, Elypso Engine and Engine library from source code and CMakeLists.txt files.
