@@ -6,7 +6,7 @@
 #pragma once
 
 #include <string>
-#include <filesystem>;
+#include <filesystem>
 
 namespace Utils
 {
