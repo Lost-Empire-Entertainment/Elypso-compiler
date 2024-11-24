@@ -63,7 +63,7 @@ namespace Core
 #ifdef _WIN32
 					command = "cmd /c \"" + builder + "\" cmake skipwait";
 #elif __linux__
-					command = "bash " + builder + " cmake skipwait";
+					string command = "bash \"" + builder + "\" cmake skipwait";
 #endif
 					break;
 				}
@@ -72,7 +72,7 @@ namespace Core
 #ifdef _WIN32
 					command = "cmd /c \"" + builder + "\" build skipwait";
 #elif __linux__
-					command = "bash " + builder + " build skipwait";
+					string command = "bash \"" + builder + "\" build skipwait";
 #endif
 					break;
 				}
