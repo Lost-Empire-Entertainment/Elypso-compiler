@@ -41,9 +41,9 @@ namespace Core
 				string engineBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine" / "build_windows.bat").string();
 				string engineLibraryBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library" / "build_windows.bat").string();
 #elif __linux__
-				string hubBuilder = (path(Compiler::projectsPath) / "Elypso-hub" / "build_linux.bat").string();
-				string engineBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine" / "build_linux.bat").string();
-				string engineLibraryBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library" / "build_linux.bat").string();
+				string hubBuilder = (path(Compiler::projectsPath) / "Elypso-hub" / "build_linux.sh").string();
+				string engineBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine" / "build_linux.sh").string();
+				string engineLibraryBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library" / "build_linux.sh").string();
 #endif
 				string builder;
 				if (GUI::target == GUI::Target::Hub) builder = hubBuilder;
