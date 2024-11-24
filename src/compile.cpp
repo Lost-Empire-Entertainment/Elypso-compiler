@@ -63,7 +63,7 @@ namespace Core
 #ifdef _WIN32
 					command = "cmd /c \"" + builder + "\" cmake skipwait";
 #elif __linux__
-					string command = "bash \"" + builder + "\" cmake skipwait";
+					command = "bash \"" + builder + "\" cmake skipwait";
 #endif
 					break;
 				}
@@ -72,7 +72,7 @@ namespace Core
 #ifdef _WIN32
 					command = "cmd /c \"" + builder + "\" build skipwait";
 #elif __linux__
-					string command = "bash \"" + builder + "\" build skipwait";
+					command = "bash \"" + builder + "\" build skipwait";
 #endif
 					break;
 				}
@@ -132,8 +132,8 @@ namespace Core
 		string targetLibPath = (path(engineRootFolder) / "Elypso engine.lib").string();
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
 #elif __linux__
-		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "libElypsoEngine.a").string();
-		string targetLibPath = (path(engineRootFolder) / "libElypsoEngine.a").string();
+		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "libElypso engine.a").string();
+		string targetLibPath = (path(engineRootFolder) / "libElypso engine.a").string();
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
 #endif
 	}
