@@ -199,12 +199,12 @@ namespace Graphics
 				for (const auto& folder : directory_iterator(setPath))
 				{
 					string folderName = path(folder).stem().string();
-					if (folderName == "Engine")
+					if (folderName == "Elypso-engine")
 					{
-						for (const auto& file : directory_iterator(folder))
+						for (const auto& childFolder : directory_iterator(folder))
 						{
-							string fileName = path(file).filename().string();
-							if (fileName == "CMakeLists.txt")
+							string childfolderName = path(childFolder).filename().string();
+							if (childfolderName == "Engine")
 							{
 								isValidFolder = true;
 								break;
@@ -215,7 +215,7 @@ namespace Graphics
 				}
 				if (!isValidFolder)
 				{
-					string msg = "---- Cannot set path to '" + setPath + "' because the chosen folder is not used by Elypso engine! Look for the folder where the Engine folder is inside of.";
+					string msg = "---- Cannot set path to '" + setPath + "' because the chosen folder is not used by Elypso engine! Look for the folder where the Elypso-engine folder is inside of.";
 
 					cout << msg << "\n";
 					output.emplace_back(msg);

@@ -36,17 +36,22 @@ namespace Core
 			{
 				isCompiling = true;
 
-				string hubBuildFolder = (path(Compiler::projectsPath) / "Hub" / "build").string();
-				string engineBuildFolder = (path(Compiler::projectsPath) / "Engine" / "build").string();
-				string engineLibraryFolder = (path(Compiler::projectsPath) / "Engine library" / "build").string();
-
-				string buildFolder;
-				if (GUI::target == GUI::Target::Hub) buildFolder = hubBuildFolder;
+#if _WIN32
+				string hubBuilder = (path(Compiler::projectsPath) / "Elypso-hub" / "build_windows.bat").string();
+				string engineBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine" / "build_windows.bat").string();
+				string engineLibraryBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library" / "build_windows.bat").string();
+#elif __linux__
+				string hubBuilder = (path(Compiler::projectsPath) / "Elypso-hub" / "build_linux.bat").string();
+				string engineBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine" / "build_linux.bat").string();
+				string engineLibraryBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library" / "build_linux.bat").string();
+#endif
+				string builder;
+				if (GUI::target == GUI::Target::Hub) builder = hubBuilder;
 				if (GUI::target == GUI::Target::Engine)
 				{
-					buildFolder = !finishedEngineBuild 
-						? engineBuildFolder 
-						: engineLibraryFolder;
+					builder = !finishedEngineBuild
+						? engineBuilder
+						: engineLibraryBuilder;
 				}
 
 				string command = "";
@@ -55,64 +60,19 @@ namespace Core
 				{
 				case CompileType::clean_rebuild:
 				{
-					if (exists(buildFolder))
-					{
-						File::DeleteFileOrfolder(buildFolder);
-					}
-					File::CreateNewFolder(buildFolder);
-
 #ifdef _WIN32
-					command =
-						"cd " + buildFolder +
-						" && cmake -A x64 .." +
-						" && cmake --build . --config Release -- /m";
-
-					command = "cmd /c \"" + command + "\"";
+					command = "cmd /c \"" + builder + "\" cmake skipwait";
 #elif __linux__
-					command =
-						"cd \"" + buildFolder + "\"" +
-						" && cmake -DCMAKE_BUILD_TYPE=Release .." +
-						" && cmake --build . -- -j$(nproc)";
+					command = builder + " cmake skipwait";
 #endif
 					break;
 				}
 				case CompileType::compile:
 				{
 #ifdef _WIN32
-					if (exists(buildFolder))
-					{
-						command =
-							"cd " + buildFolder +
-							" && cmake --build . --config Release -- /m";
-					}
-					else
-					{
-						File::CreateNewFolder(buildFolder);
-
-						command =
-							"cd " + buildFolder +
-							" && cmake -A x64 .." +
-							" && cmake --build . --config Release -- /m";
-					}
-
-					command = "cmd /c \"" + command + "\"";
+					command = "cmd /c \"" + builder + "\" build skipwait";
 #elif __linux__
-					if (exists(buildFolder))
-					{
-						command =
-							"cd \"" + buildFolder + "\"" +
-							" && cmake --build . -- -j$(nproc)";
-					}
-					else
-					{
-						cout << "attempting to create folder " << buildFolder << "\n";
-						File::CreateNewFolder(buildFolder);
-
-						command =
-							"cd \"" + buildFolder + "\"" +
-							" && cmake -DCMAKE_BUILD_TYPE=Release .." +
-							" && cmake --build . -- -j$(nproc)";
-					}
+					command = builder + " build skipwait";
 #endif
 					break;
 				}
@@ -153,11 +113,28 @@ namespace Core
 						 && !finishedLibraryBuild)
 				{
 					finishedLibraryBuild = true;
+					CopyLibraryAfterCompile();
 				}
 
 				GUI::FinishCompile();
 			});
 
 		CompileThread.detach();
+	}
+
+	void TheCompiler::CopyLibraryAfterCompile()
+	{
+		string engineLibraryRootFolder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library").string();
+		string engineRootFolder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine").string();
+
+#if _WIN32
+		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "Elypso engine.lib").string();
+		string targetLibPath = (path(engineRootFolder) / "Elypso engine.lib").string();
+		File::CopyFileOrFolder(originLibPath, targetLibPath);
+#elif __linux__
+		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "libElypsoEngine.a").string();
+		string targetLibPath = (path(engineRootFolder) / "libElypsoEngine.a").string();
+		File::CopyFileOrFolder(originLibPath, targetLibPath);
+#endif
 	}
 }

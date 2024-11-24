@@ -6,16 +6,19 @@
 #pragma once
 
 #include <string>
+#include <filesystem>;
 
 namespace Utils
 {
 	using std::string;
+	using std::filesystem::path;
 
 	class File
 	{
 	public:
 		static void CreateNewFolder(const string& folderPath);
 		static void DeleteFileOrfolder(const string& sourcePath);
+		static void CopyFileOrFolder(const path& sourcePath, const path& destinationPath);
 		static string SetPath();
 	};
 }

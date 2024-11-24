@@ -9,7 +9,6 @@
 #elif __linux__
 #include <array>
 #endif
-#include <filesystem>
 #include <iostream>
 
 #include "fileUtils.hpp"
@@ -29,7 +28,7 @@ using std::filesystem::is_regular_file;
 using std::filesystem::directory_iterator;
 using std::filesystem::remove_all;
 using std::filesystem::remove;
-using std::filesystem::path;
+using std::filesystem::copy_options;
 
 using Core::Compiler;
 
@@ -107,6 +106,37 @@ namespace Utils
 		catch (const exception& e)
 		{
 			cout << "Caught exception when deleting file or folder: " << string(e.what()) << ".\n\n";
+		}
+	}
+
+	void File::CopyFileOrFolder(const path& sourcePath, const path& destinationPath)
+	{
+		string output;
+
+		if (!exists(sourcePath))
+		{
+			cout << "Error: Source path " << sourcePath.string() << " does not exist!\n\n";
+			return;
+		}
+
+		try
+		{
+			if (is_directory(sourcePath))
+			{
+				copy(sourcePath, destinationPath, copy_options::recursive | copy_options::overwrite_existing);
+
+				cout << "Copied folder " << sourcePath.string() << " to " << destinationPath.string() << ".\n\n";
+			}
+			else if (is_regular_file(sourcePath))
+			{
+				copy_file(sourcePath, destinationPath, copy_options::overwrite_existing);
+
+				cout << "Copied file " << sourcePath.string() << " to " << destinationPath.string() << ".\n\n";
+			}
+		}
+		catch (const exception& e)
+		{
+			cout << "Exception in File::CopyFileOrFolder: " << string(e.what()) << ".\n\n";
 		}
 	}
 

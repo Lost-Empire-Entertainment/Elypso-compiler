@@ -22,5 +22,7 @@ namespace Core
 		static inline CompileType compileType;
 
 		static void Compile();
+	private:
+		static void CopyLibraryAfterCompile();
 	};
 }

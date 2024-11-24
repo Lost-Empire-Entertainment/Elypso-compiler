@@ -22,6 +22,14 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
+if "%~1"=="build" (
+    goto build
+)
+
+if "%~1"=="cmake" (
+    goto cmake
+)
+
 :build
 
 :: Change to the script directory
@@ -41,7 +49,9 @@ if not exist "%buildPath%" (
 		goto cmake
 	) else (
         echo %cmsuc% Build succeeded!
-        pause
+		if not "%~2"=="skipwait" (
+			pause
+		)
         exit /b 0
     )
 )
@@ -61,7 +71,9 @@ cd /d "%buildPath%"
 cmake --preset x64-release -S "%sourcePath%"
 if %errorlevel% neq 0 (
     echo %cmexc% Configuration failed.
-    pause
+    if not "%~2"=="skipwait" (
+		pause
+	)
     exit /b 1
 )
 goto build
