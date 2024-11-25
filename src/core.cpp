@@ -7,6 +7,8 @@
 #include <Windows.h>
 #include <ShlObj.h>
 #include <TlHelp32.h>
+#elif __linux__
+#include <unistd.h>
 #endif
 #include <iostream>
 #include <filesystem>
@@ -28,6 +30,7 @@ using std::filesystem::exists;
 using std::filesystem::current_path;
 using std::quick_exit;
 using std::filesystem::path;
+using std::to_string;
 
 using Graphics::Render;
 using Utils::File;
@@ -40,9 +43,14 @@ namespace Core
 {
 	void Compiler::MainInitialize()
 	{
-		if (IsThisProcessAlreadyRunning("Elypso compiler.exe"))
+#if _WIN32
+		string name = "Elypso compiler.exe";
+#elif __linux__
+		string name = "Elypso compiler";
+#endif
+		if (IsThisProcessAlreadyRunning(name))
 		{
-			CreateErrorPopup("Elypso compiler is already running!");
+			CreateErrorPopup((name + " is already running!").c_str());
 		}
 
 		cout << "Copyright (C) Lost Empire Entertainment 2024\n\n";
@@ -165,8 +173,14 @@ namespace Core
 		CloseHandle(hProcessSnap);
 		return processFound;
 #elif __linux__
-		string command = "pgrep -l \"" + processName + "\"";
-		return !system(command.c_str());
+		//get the process id
+		pid_t currentPID = getpid();
+
+		//construct the command to find processes by name, excluding the currend PID
+		string command = "pgrep -x \"" + processName + "\" | grep -v " + to_string(currentPID) + " > /dev/null";
+
+		//execute the command and return the result
+		return (system(command.c_str()) == 0);
 #endif
 	}
 
