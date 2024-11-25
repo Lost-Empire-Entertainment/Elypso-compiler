@@ -43,7 +43,7 @@ namespace Core
 {
 	void Compiler::MainInitialize()
 	{
-#if _WIN32
+#ifdef _WIN32
 		string name = "Elypso compiler.exe";
 #elif __linux__
 		string name = "Elypso compiler";

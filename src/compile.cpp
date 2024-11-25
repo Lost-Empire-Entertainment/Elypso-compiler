@@ -36,7 +36,7 @@ namespace Core
 			{
 				isCompiling = true;
 
-#if _WIN32
+#ifdef _WIN32
 				string hubBuilder = (path(Compiler::projectsPath) / "Elypso-hub" / "build_windows.bat").string();
 				string engineBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine" / "build_windows.bat").string();
 				string engineLibraryBuilder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library" / "build_windows.bat").string();
@@ -127,7 +127,7 @@ namespace Core
 		string engineLibraryRootFolder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine library").string();
 		string engineRootFolder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine").string();
 
-#if _WIN32
+#ifdef _WIN32
 		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "Elypso engine.lib").string();
 		string targetLibPath = (path(engineRootFolder) / "Elypso engine.lib").string();
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
