@@ -61,7 +61,7 @@ namespace Core
 				case CompileType::clean_rebuild:
 				{
 #ifdef _WIN32
-					command = "cmd /c \"" + builder + "\" cmake skipwait";
+					command = "cmd /c \"" + builder + "\" cmake clang skipwait";
 #elif __linux__
 					command = "bash \"" + builder + "\" cmake skipwait";
 #endif
@@ -70,7 +70,7 @@ namespace Core
 				case CompileType::compile:
 				{
 #ifdef _WIN32
-					command = "cmd /c \"" + builder + "\" build skipwait";
+					command = "cmd /c \"" + builder + "\" build clang skipwait";
 #elif __linux__
 					command = "bash \"" + builder + "\" build skipwait";
 #endif
