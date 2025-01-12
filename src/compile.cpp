@@ -130,6 +130,16 @@ namespace Core
 #ifdef _WIN32
 		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "Elypso engine.lib").string();
 		string targetLibPath = (path(engineRootFolder) / "Elypso engine.lib").string();
+
+		//clang version
+		if (!exists(originLibPath))
+		{
+			originLibPath = (path(originLibPath).parent_path() / "libElypso engine.a").string();
+			if (!exists(originLibPath)) Compiler::CreateErrorPopup("Elypso engine library failed to compile!");
+
+			targetLibPath = (path(targetLibPath).parent_path() / "libElypso engine.a").string();
+		}
+
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
 #elif __linux__
 		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "libElypso engine.a").string();
