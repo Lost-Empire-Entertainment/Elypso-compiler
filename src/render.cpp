@@ -52,8 +52,8 @@ namespace Graphics
 		//create a window object holding all the windowing data
 		string name = "Compiler | Elypso hub";
 		window = glfwCreateWindow(
-			1000,
-			1000,
+			1024,
+			768,
 			name.c_str(),
 			NULL,
 			NULL);
@@ -66,7 +66,7 @@ namespace Graphics
 
 		glfwMakeContextCurrent(window);
 		glfwSetFramebufferSizeCallback(window, UpdateAfterRescale);
-		glfwSetWindowSizeLimits(window, 750, 750, 1500, 1500);
+		glfwSetWindowSizeLimits(window, 800, 600, 7680, 4320);
 		glfwSwapInterval(1);
 
 		int width, height, channels;
