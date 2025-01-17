@@ -4,5 +4,4 @@ build/
 out/
 
 # Ignore local test and debug files
-terminal-windows.txt
 build.bat
