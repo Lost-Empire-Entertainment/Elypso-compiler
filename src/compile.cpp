@@ -12,7 +12,6 @@
 #include "compile.hpp"
 #include "gui.hpp"
 #include "core.hpp"
-#include "gui.hpp"
 #include "fileUtils.hpp"
 
 using std::filesystem::exists;
@@ -128,16 +127,34 @@ namespace Core
 		string engineRootFolder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine").string();
 
 #ifdef _WIN32
-		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "Elypso engine.lib").string();
-		string targetLibPath = (path(engineRootFolder) / "Elypso engine.lib").string();
+		string originLibPath;
+		string targetLibPath;
 
-		//clang version
+		if (clangCompile)
+		{
+#ifdef _DEBUG
+			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "clang-x64-debug" / "libElypso engine.a").string();
+#else
+			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "clang-x64-release" / "libElypso engine.a").string();
+#endif
+			targetLibPath = (path(engineRootFolder) / "libElypso engine.a").string();
+		}
+
+		else if (msvcCompile)
+		{
+#ifdef _DEBUG
+			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "msvc-x64-debug" / "Elypso engine.lib").string();
+#else
+			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "msvc-x64-release" / "Elypso engine.lib").string();
+#endif
+			targetLibPath = (path(engineRootFolder) / "Elypso engine.lib").string();
+		}
+
+		//failed to copy library after compile
 		if (!exists(originLibPath))
 		{
-			originLibPath = (path(originLibPath).parent_path() / "libElypso engine.a").string();
-			if (!exists(originLibPath)) Compiler::CreateErrorPopup("Elypso engine library failed to compile!");
-
-			targetLibPath = (path(targetLibPath).parent_path() / "libElypso engine.a").string();
+			cout << "origin lib path: " << originLibPath << "\n";
+			Compiler::CreateErrorPopup("Elypso engine library failed to compile!");
 		}
 
 		File::CopyFileOrFolder(originLibPath, targetLibPath);

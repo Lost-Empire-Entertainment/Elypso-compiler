@@ -145,6 +145,16 @@ namespace Graphics
 			ImVec2 topButton2Pos(
 				(windowSize.x * 0.6f) - (topButtonSize.x * 0.5f), 15.0f);
 
+			ImVec2 checkbox_clang(
+				(windowSize.x * 0.75f) - (topButtonSize.x * 0.5f), 15.0f);
+			ImVec2 checkbox_msvc(
+				(windowSize.x * 0.79f) - (topButtonSize.x * 0.5f), 15.0f);
+
+			ImVec2 checkbox_release(
+				(windowSize.x * 0.84f) - (topButtonSize.x * 0.5f), 15.0f);
+			ImVec2 checkbox_debug(
+				(windowSize.x * 0.88f) - (topButtonSize.x * 0.5f), 15.0f);
+
 			ImVec2 topSideButton(
 				(windowSize.x * 0.95f) - (topButtonSize.x * 0.5f), 25.0f);
 
@@ -186,6 +196,102 @@ namespace Graphics
 
 					target = Target::Engine;
 				}
+			}
+
+			//toggle clang compilation
+			ImGui::SetCursorPos(checkbox_clang);
+			if (ImGui::Checkbox("##compile_clang", &TheCompiler::clangCompile))
+			{
+				if (TheCompiler::clangCompile)
+				{
+					string msg = "---- Enabled CLang compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+				else
+				{
+					string msg = "---- Disabled CLang compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+			}
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::Text("Toggle CLang compilation.");
+				ImGui::EndTooltip();
+			}
+
+			//toggle msvc compilation
+			ImGui::SetCursorPos(checkbox_msvc);
+			if (ImGui::Checkbox("##compile_msvc", &TheCompiler::msvcCompile))
+			{
+				if (TheCompiler::msvcCompile)
+				{
+					string msg = "---- Enabled MSVC compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+				else
+				{
+					string msg = "---- Disabled MSVC compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+			}
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::Text("Toggle MSVC compilation.");
+				ImGui::EndTooltip();
+			}
+
+			//toggle release mode build
+			ImGui::SetCursorPos(checkbox_release);
+			if (ImGui::Checkbox("##compile_release", &TheCompiler::releaseCompile))
+			{
+				if (TheCompiler::releaseCompile)
+				{
+					string msg = "---- Enabled Release mode compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+				else
+				{
+					string msg = "---- Disabled Release mode compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+			}
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::Text("Toggle Release mode compilation.");
+				ImGui::EndTooltip();
+			}
+
+			//toggle debug mode compilation
+			ImGui::SetCursorPos(checkbox_debug);
+			if (ImGui::Checkbox("##compile_debug", &TheCompiler::debugCompile))
+			{
+				if (TheCompiler::debugCompile)
+				{
+					string msg = "---- Enabled Debug mode compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+				else
+				{
+					string msg = "---- Disabled Debug mode compilation.";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+				}
+			}
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::Text("Toggle Debug mode compilation.");
+				ImGui::EndTooltip();
 			}
 
 			//press set path button to assign the folder path of hub/engine
