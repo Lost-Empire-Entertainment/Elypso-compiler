@@ -474,7 +474,7 @@ namespace Graphics
 				if (TheCompiler::clangCompile
 					&& TheCompiler::msvcCompile)
 				{
-					string msg = "---- Cannot clean rebuild if both clang or msvc have been selected!";
+					string msg = "---- Cannot clean rebuild if both clang and msvc have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
 
@@ -492,7 +492,7 @@ namespace Graphics
 				if (TheCompiler::releaseCompile
 					&& TheCompiler::debugCompile)
 				{
-					string msg = "---- Cannot clean rebuild if both release or debug have been selected!";
+					string msg = "---- Cannot clean rebuild if both release and debug have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
 
@@ -575,6 +575,12 @@ namespace Graphics
 						TheCompiler::finishedLibraryBuild = false;
 					}
 
+					if (GUI::target == GUI::Target::Hub)
+					{
+						TheCompiler::finishedEngineBuild = false;
+						TheCompiler::finishedLibraryBuild = false;
+					}
+
 					TheCompiler::Compile();
 				}
 			}
@@ -601,7 +607,7 @@ namespace Graphics
 				if (TheCompiler::clangCompile
 					&& TheCompiler::msvcCompile)
 				{
-					string msg = "---- Cannot compile if both clang or msvc have been selected!";
+					string msg = "---- Cannot compile if both clang and msvc have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
 
@@ -619,7 +625,7 @@ namespace Graphics
 				if (TheCompiler::releaseCompile
 					&& TheCompiler::debugCompile)
 				{
-					string msg = "---- Cannot compile if both release or debug have been selected!";
+					string msg = "---- Cannot compile if both release and debug have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
 
@@ -733,6 +739,12 @@ namespace Graphics
 						TheCompiler::finishedLibraryBuild = false;
 					}
 
+					if (GUI::target == GUI::Target::Hub)
+					{
+						TheCompiler::finishedEngineBuild = false;
+						TheCompiler::finishedLibraryBuild = false;
+					}
+
 					TheCompiler::Compile();
 				}
 			}
@@ -755,22 +767,26 @@ namespace Graphics
 		if (target == Target::Engine
 			&& !TheCompiler::finishedLibraryBuild)
 		{
-			string msg = "---- Finished compiling Elypso engine";
+			if (TheCompiler::finishedEngineBuild
+				&& !TheCompiler::finishedLibraryBuild)
+			{
+				string msg = "---- Finished compiling Elypso engine";
 
-			cout << msg << "\n";
-			output.emplace_back(msg);
+				cout << msg << "\n";
+				output.emplace_back(msg);
 
-			msg = "\n--------------------\n\n";
+				msg = "\n--------------------\n\n";
 
-			cout << msg;
-			output.emplace_back(msg);
+				cout << msg;
+				output.emplace_back(msg);
 
-			msg = "---- Started compiling Elypso engine library\n";
+				msg = "---- Started compiling Elypso engine library\n";
 
-			cout << msg;
-			output.emplace_back(msg);
+				cout << msg;
+				output.emplace_back(msg);
 
-			TheCompiler::Compile();
+				TheCompiler::Compile();
+			}
 		}
 		else
 		{
