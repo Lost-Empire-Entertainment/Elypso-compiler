@@ -42,6 +42,7 @@ set(EXT_GLFW_DIR "${CMAKE_SOURCE_DIR}/_external_shared/GLFW")
 set(EXT_GLAD_DIR "${CMAKE_SOURCE_DIR}/_external_shared/Glad")
 set(EXT_GLM_DIR "${CMAKE_SOURCE_DIR}/_external_shared/GLM")
 set(EXT_IMGUI_DIR "${CMAKE_SOURCE_DIR}/_external_shared/ImGui")
+set(EXT_MAGIC_ENUM_DIR "${CMAKE_SOURCE_DIR}/_external_shared/magic_enum")
 set(EXT_STB_IMAGE_DIR "${CMAKE_SOURCE_DIR}/_external_shared/Stb_image")
 
 # Add GLAD
@@ -105,6 +106,7 @@ target_include_directories(Elypso_compiler PRIVATE
 	${EXT_GLFW_DIR}
 	${EXT_GLAD_DIR}
 	${EXT_GLM_DIR}
+	${EXT_MAGIC_ENUM_DIR}
 	${EXT_IMGUI_DIR}
 	${EXT_STB_IMAGE_DIR}
 )

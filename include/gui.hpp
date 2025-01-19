@@ -19,9 +19,24 @@ namespace Graphics
 		enum class Target
 		{
 			Hub,
-			Engine
+			Engine,
+			EngineLibrary
 		};
 		static inline Target target;
+
+		enum class TargetCompiler
+		{
+			msvc,
+			clang
+		};
+		static inline TargetCompiler targetCompiler;
+
+		enum class TargetVersion
+		{
+			release,
+			debug
+		};
+		static inline TargetVersion targetVersion;
 
 		static inline vector<string> output;
 
@@ -33,6 +48,7 @@ namespace Graphics
 
 		static void RenderParentWindow();
 		static void RenderWindowContent();
+
 		static void FinishCompile();
 
 		static void GUIShutdown();

@@ -60,7 +60,9 @@ namespace Core
 				case CompileType::clean_rebuild:
 				{
 #ifdef _WIN32
-					command = "cmd /c \"" + builder + "\" cmake clang skipwait";
+					string compiler = TheCompiler::clangCompile ? "clang" : "msvc";
+					string buildType = TheCompiler::releaseCompile ? "release" : "debug";
+					command = "cmd /c \"" + builder + "\" cmake " + compiler + " " + buildType + " skipwait";
 #elif __linux__
 					command = "bash \"" + builder + "\" cmake skipwait";
 #endif
@@ -69,7 +71,9 @@ namespace Core
 				case CompileType::compile:
 				{
 #ifdef _WIN32
-					command = "cmd /c \"" + builder + "\" build clang skipwait";
+					string compiler = TheCompiler::clangCompile ? "clang" : "msvc";
+					string buildType = TheCompiler::releaseCompile ? "release" : "debug";
+					command = "cmd /c \"" + builder + "\" build " + compiler + " " + buildType + " skipwait";
 #elif __linux__
 					command = "bash \"" + builder + "\" build skipwait";
 #endif
@@ -127,28 +131,13 @@ namespace Core
 		string engineRootFolder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine").string();
 
 #ifdef _WIN32
-		string originLibPath;
-		string targetLibPath;
+		string targetFolderCompiler = GUI::targetCompiler == GUI::TargetCompiler::clang ? "clang" : "msvc";
+		string targetFolderBuild = GUI::targetVersion == GUI::TargetVersion::release ? "release" : "debug";
+		string fullTargetFolderName = targetFolderCompiler + "-x64-" + targetFolderBuild;
+		string libName = TheCompiler::clangCompile ? "libElypso engine.a" : "Elypso engine.lib";
 
-		if (clangCompile)
-		{
-#ifdef _DEBUG
-			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "clang-x64-debug" / "libElypso engine.a").string();
-#else
-			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "clang-x64-release" / "libElypso engine.a").string();
-#endif
-			targetLibPath = (path(engineRootFolder) / "libElypso engine.a").string();
-		}
-
-		else if (msvcCompile)
-		{
-#ifdef _DEBUG
-			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "msvc-x64-debug" / "Elypso engine.lib").string();
-#else
-			originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "msvc-x64-release" / "Elypso engine.lib").string();
-#endif
-			targetLibPath = (path(engineRootFolder) / "Elypso engine.lib").string();
-		}
+		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / fullTargetFolderName / libName).string();
+		string targetLibPath = (path(engineRootFolder) / libName).string();
 
 		//failed to copy library after compile
 		if (!exists(originLibPath))

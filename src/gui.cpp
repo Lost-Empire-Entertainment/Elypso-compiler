@@ -11,6 +11,7 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
 #include "glfw3.h"
+#include "magic_enum.hpp"
 
 #include "gui.hpp"
 #include "render.hpp"
@@ -404,12 +405,20 @@ namespace Graphics
 			{
 				ImGui::TextWrapped("%s", message.c_str());
 
-				if (ImGui::IsItemClicked()
+				/*
+				* 
+				* DISABLED COPYING TEXT FROM CONSOLE
+				* WILL BE RE-ENABLED IN A FUTURE VERSION
+				* IF I BOTHER TO FIND A FIX TO CRASH IN VISUAL STUDIO
+				* WHEN DOUBLE-CLICKING THE TEXT USER WANTS TO COPY
+				* 
+					if (ImGui::IsItemClicked()
 					&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
 					cout << "---- Added '" << message << "' to clipboard.\n";
 					ImGui::SetClipboardText(message.c_str());
 				}
+				*/
 			}
 
 			ImGui::PopTextWrapPos();
@@ -447,86 +456,126 @@ namespace Graphics
 			ImGui::SetCursorPos(button1Pos);
 			if (ImGui::Button("Clean rebuild", buttonSize))
 			{
+				bool canCleanRebuild = true;
+
+				action = Action::clean_rebuild;
+
+				string targetName = target == Target::Hub ? "Elypso hub" : "Elypso engine";
+
 				if (!TheCompiler::clangCompile
 					&& !TheCompiler::msvcCompile)
 				{
-					string msg = "Error: Unable to compile if neither clang or msvc have been selected!";
+					string msg = "---- Cannot clean rebuild if neither clang or msvc have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
+
+					canCleanRebuild = false;
+				}
+				if (TheCompiler::clangCompile
+					&& TheCompiler::msvcCompile)
+				{
+					string msg = "---- Cannot clean rebuild if both clang or msvc have been selected!";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCleanRebuild = false;
 				}
 				if (!TheCompiler::releaseCompile
 					&& !TheCompiler::debugCompile)
 				{
-					string msg = "Error: Unable to compile if neither release or debug have been selected!";
+					string msg = "---- Cannot clean rebuild if neither release or debug have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
+
+					canCleanRebuild = false;
 				}
-				else
+				if (TheCompiler::releaseCompile
+					&& TheCompiler::debugCompile)
 				{
-					action = Action::clean_rebuild;
+					string msg = "---- Cannot clean rebuild if both release or debug have been selected!";
+					cout << msg << "\n";
+					output.emplace_back(msg);
 
-					string targetName;
-					if (target == Target::Hub) targetName = "Elypso hub";
-					if (target == Target::Engine) targetName = "Elypso engine";
+					canCleanRebuild = false;
+				}
 
-					bool canCleanRebuild = true;
+				if (Compiler::projectsPath == "")
+				{
+					string msg = "---- Cannot clean rebuild " + targetName + " because the projects folder has not been assigned yet!";
 
-					if (Compiler::projectsPath == "")
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCleanRebuild = false;
+				}
+
+				if (target == Target::Hub
+					&& Compiler::IsThisProcessAlreadyRunning("Elypso hub.exe"))
+				{
+					string msg = "---- Cannot clean rebuild " + targetName + " because Elypso hub is running!";
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCleanRebuild = false;
+				}
+				if (target == Target::Engine
+					&& Compiler::IsThisProcessAlreadyRunning("Elypso engine.exe"))
+				{
+					string msg = "---- Cannot clean rebuild " + targetName + " because Elypso engine is running!";
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCleanRebuild = false;
+				}
+
+				if (canCleanRebuild)
+				{
+					output.clear();
+
+					string msg = "---- Started clean rebuilding " + targetName;
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					if (!hasBuiltOnce) hasBuiltOnce = true;
+					isBuilding = true;
+					if (sentMsg) sentMsg = false;
+
+					TheCompiler::compileType = TheCompiler::CompileType::clean_rebuild;
+
+					if (TheCompiler::clangCompile
+						&& !TheCompiler::msvcCompile)
 					{
-						string msg = "---- Cannot clean rebuild " + targetName + " because the projects folder has not been assigned yet!";
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						canCleanRebuild = false;
+						targetCompiler = TargetCompiler::clang;
+					}
+					else if (!TheCompiler::clangCompile
+						&& TheCompiler::msvcCompile)
+					{
+						targetCompiler = TargetCompiler::msvc;
 					}
 
-					if (target == Target::Hub
-						&& Compiler::IsThisProcessAlreadyRunning("Elypso hub.exe"))
+					if (TheCompiler::releaseCompile
+						&& !TheCompiler::debugCompile)
 					{
-						string msg = "---- Cannot clean rebuild " + targetName + " because Elypso hub is running!";
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						canCleanRebuild = false;
+						targetVersion = TargetVersion::release;
 					}
+					else if (!TheCompiler::releaseCompile
+						&& TheCompiler::debugCompile)
+					{
+						targetVersion = TargetVersion::debug;
+					}
+
 					if (target == Target::Engine
-						&& Compiler::IsThisProcessAlreadyRunning("Elypso engine.exe"))
+						&& (TheCompiler::finishedEngineBuild
+						|| TheCompiler::finishedLibraryBuild))
 					{
-						string msg = "---- Cannot clean rebuild " + targetName + " because Elypso engine is running!";
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						canCleanRebuild = false;
+						TheCompiler::finishedEngineBuild = false;
+						TheCompiler::finishedLibraryBuild = false;
 					}
 
-					if (canCleanRebuild)
-					{
-						output.clear();
-
-						string msg = "---- Started clean rebuilding " + targetName;
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						if (!hasBuiltOnce) hasBuiltOnce = true;
-						isBuilding = true;
-						if (sentMsg) sentMsg = false;
-
-						TheCompiler::compileType = TheCompiler::CompileType::clean_rebuild;
-
-						if (target == Target::Engine
-							&& (TheCompiler::finishedEngineBuild
-								|| TheCompiler::finishedLibraryBuild))
-						{
-							TheCompiler::finishedEngineBuild = false;
-							TheCompiler::finishedLibraryBuild = false;
-						}
-
-						TheCompiler::Compile();
-					}
+					TheCompiler::Compile();
 				}
 			}
 
@@ -534,86 +583,157 @@ namespace Graphics
 			ImGui::SetCursorPos(button2Pos);
 			if (ImGui::Button("Compile", buttonSize))
 			{
+				bool canCompile = true;
+
+				action = Action::compile;
+
+				string targetName = target == Target::Hub ? "Elypso hub" : "Elypso engine";
+
 				if (!TheCompiler::clangCompile
 					&& !TheCompiler::msvcCompile)
 				{
-					string msg = "Error: Unable to compile if neither clang or msvc have been selected!";
+					string msg = "---- Cannot compile if neither clang or msvc have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
+
+					canCompile = false;
+				}
+				if (TheCompiler::clangCompile
+					&& TheCompiler::msvcCompile)
+				{
+					string msg = "---- Cannot compile if both clang or msvc have been selected!";
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCompile = false;
 				}
 				if (!TheCompiler::releaseCompile
 					&& !TheCompiler::debugCompile)
 				{
-					string msg = "Error: Unable to compile if neither release or debug have been selected!";
+					string msg = "---- Cannot compile if neither release or debug have been selected!";
 					cout << msg << "\n";
 					output.emplace_back(msg);
+
+					canCompile = false;
 				}
-				else
+				if (TheCompiler::releaseCompile
+					&& TheCompiler::debugCompile)
 				{
-					action = Action::compile;
+					string msg = "---- Cannot compile if both release or debug have been selected!";
+					cout << msg << "\n";
+					output.emplace_back(msg);
 
-					string targetName;
-					if (target == Target::Hub) targetName = "Elypso hub";
-					if (target == Target::Engine) targetName = "Elypso engine";
+					canCompile = false;
+				}
 
-					bool canCompile = true;
+				if (Compiler::projectsPath == "")
+				{
+					string msg = "---- Cannot compile " + targetName + " because the projects folder has not been assigned yet!";
 
-					if (Compiler::projectsPath == "")
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCompile = false;
+				}
+
+				if (target == Target::Hub
+					&& Compiler::IsThisProcessAlreadyRunning("Elypso hub.exe"))
+				{
+					string msg = "---- Cannot compile " + targetName + " because Elypso hub is running!";
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCompile = false;
+				}
+				if (target == Target::Engine
+					&& Compiler::IsThisProcessAlreadyRunning("Elypso engine.exe"))
+				{
+					string msg = "---- Cannot compile " + targetName + " because Elypso engine is running!";
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCompile = false;
+				}
+
+				if (Compiler::projectsPath == "")
+				{
+					string msg = "---- Cannot compile " + targetName + " because the projects folder has not been assigned yet!";
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCompile = false;
+				}
+
+				if (target == Target::Hub
+					&& Compiler::IsThisProcessAlreadyRunning("Elypso hub.exe"))
+				{
+					string msg = "---- Cannot compile " + targetName + " because Elypso hub is running!";
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCompile = false;
+				}
+				if (target == Target::Engine
+					&& Compiler::IsThisProcessAlreadyRunning("Elypso engine.exe"))
+				{
+					string msg = "---- Cannot compile " + targetName + " because Elypso engine is running!";
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					canCompile = false;
+				}
+
+				if (canCompile)
+				{
+					output.clear();
+
+					string msg = "---- Started compiling " + targetName;
+
+					cout << msg << "\n";
+					output.emplace_back(msg);
+
+					if (!hasBuiltOnce) hasBuiltOnce = true;
+					isBuilding = true;
+					if (sentMsg) sentMsg = false;
+
+					TheCompiler::compileType = TheCompiler::CompileType::compile;
+
+					if (TheCompiler::clangCompile
+						&& !TheCompiler::msvcCompile)
 					{
-						string msg = "---- Cannot compile " + targetName + " because the projects folder has not been assigned yet!";
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						canCompile = false;
+						targetCompiler = TargetCompiler::clang;
+					}
+					else if (!TheCompiler::clangCompile
+						&& TheCompiler::msvcCompile)
+					{
+						targetCompiler = TargetCompiler::msvc;
 					}
 
-					if (target == Target::Hub
-						&& Compiler::IsThisProcessAlreadyRunning("Elypso hub.exe"))
+					if (TheCompiler::releaseCompile
+						&& !TheCompiler::debugCompile)
 					{
-						string msg = "---- Cannot compile " + targetName + " because Elypso hub is running!";
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						canCompile = false;
+						targetVersion = TargetVersion::release;
 					}
+					else if (!TheCompiler::releaseCompile
+						&& TheCompiler::debugCompile)
+					{
+						targetVersion = TargetVersion::debug;
+					}
+
 					if (target == Target::Engine
-						&& Compiler::IsThisProcessAlreadyRunning("Elypso engine.exe"))
+						&& (TheCompiler::finishedEngineBuild
+							|| TheCompiler::finishedLibraryBuild))
 					{
-						string msg = "---- Cannot compile " + targetName + " because Elypso engine is running!";
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						canCompile = false;
+						TheCompiler::finishedEngineBuild = false;
+						TheCompiler::finishedLibraryBuild = false;
 					}
 
-					if (canCompile)
-					{
-						output.clear();
-
-						string msg = "---- Started compiling " + targetName;
-
-						cout << msg << "\n";
-						output.emplace_back(msg);
-
-						if (!hasBuiltOnce) hasBuiltOnce = true;
-						isBuilding = true;
-						if (sentMsg) sentMsg = false;
-
-						TheCompiler::compileType = TheCompiler::CompileType::compile;
-
-						if (target == Target::Engine
-							&& (TheCompiler::finishedEngineBuild
-								|| TheCompiler::finishedLibraryBuild))
-						{
-							TheCompiler::finishedEngineBuild = false;
-							TheCompiler::finishedLibraryBuild = false;
-						}
-
-						TheCompiler::Compile();
-					}
+					TheCompiler::Compile();
 				}
 			}
 
@@ -635,32 +755,26 @@ namespace Graphics
 		if (target == Target::Engine
 			&& !TheCompiler::finishedLibraryBuild)
 		{
-			if (TheCompiler::finishedEngineBuild
-				&& !TheCompiler::finishedLibraryBuild)
-			{
-				string msg = "---- Finished compiling Elypso engine";
+			string msg = "---- Finished compiling Elypso engine";
 
-				cout << msg << "\n";
-				output.emplace_back(msg);
+			cout << msg << "\n";
+			output.emplace_back(msg);
 
-				msg = "\n--------------------\n\n";
+			msg = "\n--------------------\n\n";
 
-				cout << msg;
-				output.emplace_back(msg);
+			cout << msg;
+			output.emplace_back(msg);
 
-				msg = "---- Started compiling Elypso engine library\n";
+			msg = "---- Started compiling Elypso engine library\n";
 
-				cout << msg;
-				output.emplace_back(msg);
+			cout << msg;
+			output.emplace_back(msg);
 
-				TheCompiler::Compile();
-			}
+			TheCompiler::Compile();
 		}
 		else
 		{
-			string targetName;
-			if (target == Target::Hub) targetName = "Elypso hub";
-			if (target == Target::Engine) targetName = "Elypso engine library";
+			string targetName = target == Target::Hub ? "Elypso hub" : "Elypso engine";
 
 			switch (action)
 			{
