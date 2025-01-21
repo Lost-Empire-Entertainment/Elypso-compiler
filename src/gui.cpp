@@ -146,15 +146,10 @@ namespace Graphics
 			ImVec2 topButton2Pos(
 				(windowSize.x * 0.6f) - (topButtonSize.x * 0.5f), 15.0f);
 
-			ImVec2 checkbox_clang(
-				(windowSize.x * 0.75f) - (topButtonSize.x * 0.5f), 15.0f);
-			ImVec2 checkbox_msvc(
-				(windowSize.x * 0.79f) - (topButtonSize.x * 0.5f), 15.0f);
-
 			ImVec2 checkbox_release(
-				(windowSize.x * 0.84f) - (topButtonSize.x * 0.5f), 15.0f);
+				(windowSize.x * 0.79f) - (topButtonSize.x * 0.5f), 15.0f);
 			ImVec2 checkbox_debug(
-				(windowSize.x * 0.88f) - (topButtonSize.x * 0.5f), 15.0f);
+				(windowSize.x * 0.84f) - (topButtonSize.x * 0.5f), 15.0f);
 
 			ImVec2 topSideButton(
 				(windowSize.x * 0.95f) - (topButtonSize.x * 0.5f), 25.0f);
@@ -197,54 +192,6 @@ namespace Graphics
 
 					target = Target::Engine;
 				}
-			}
-
-			//toggle clang compilation
-			ImGui::SetCursorPos(checkbox_clang);
-			if (ImGui::Checkbox("##compile_clang", &TheCompiler::clangCompile))
-			{
-				if (TheCompiler::clangCompile)
-				{
-					string msg = "---- Enabled CLang compilation.";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-				}
-				else
-				{
-					string msg = "---- Disabled CLang compilation.";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-				}
-			}
-			if (ImGui::IsItemHovered())
-			{
-				ImGui::BeginTooltip();
-				ImGui::Text("Toggle CLang compilation.");
-				ImGui::EndTooltip();
-			}
-
-			//toggle msvc compilation
-			ImGui::SetCursorPos(checkbox_msvc);
-			if (ImGui::Checkbox("##compile_msvc", &TheCompiler::msvcCompile))
-			{
-				if (TheCompiler::msvcCompile)
-				{
-					string msg = "---- Enabled MSVC compilation.";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-				}
-				else
-				{
-					string msg = "---- Disabled MSVC compilation.";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-				}
-			}
-			if (ImGui::IsItemHovered())
-			{
-				ImGui::BeginTooltip();
-				ImGui::Text("Toggle MSVC compilation.");
-				ImGui::EndTooltip();
 			}
 
 			//toggle release mode build
@@ -462,24 +409,6 @@ namespace Graphics
 
 				string targetName = target == Target::Hub ? "Elypso hub" : "Elypso engine";
 
-				if (!TheCompiler::clangCompile
-					&& !TheCompiler::msvcCompile)
-				{
-					string msg = "---- Cannot clean rebuild if neither clang or msvc have been selected!";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-
-					canCleanRebuild = false;
-				}
-				if (TheCompiler::clangCompile
-					&& TheCompiler::msvcCompile)
-				{
-					string msg = "---- Cannot clean rebuild if both clang and msvc have been selected!";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-
-					canCleanRebuild = false;
-				}
 				if (!TheCompiler::releaseCompile
 					&& !TheCompiler::debugCompile)
 				{
@@ -545,17 +474,6 @@ namespace Graphics
 
 					TheCompiler::compileType = TheCompiler::CompileType::clean_rebuild;
 
-					if (TheCompiler::clangCompile
-						&& !TheCompiler::msvcCompile)
-					{
-						targetCompiler = TargetCompiler::clang;
-					}
-					else if (!TheCompiler::clangCompile
-						&& TheCompiler::msvcCompile)
-					{
-						targetCompiler = TargetCompiler::msvc;
-					}
-
 					if (TheCompiler::releaseCompile
 						&& !TheCompiler::debugCompile)
 					{
@@ -595,24 +513,6 @@ namespace Graphics
 
 				string targetName = target == Target::Hub ? "Elypso hub" : "Elypso engine";
 
-				if (!TheCompiler::clangCompile
-					&& !TheCompiler::msvcCompile)
-				{
-					string msg = "---- Cannot compile if neither clang or msvc have been selected!";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-
-					canCompile = false;
-				}
-				if (TheCompiler::clangCompile
-					&& TheCompiler::msvcCompile)
-				{
-					string msg = "---- Cannot compile if both clang and msvc have been selected!";
-					cout << msg << "\n";
-					output.emplace_back(msg);
-
-					canCompile = false;
-				}
 				if (!TheCompiler::releaseCompile
 					&& !TheCompiler::debugCompile)
 				{
@@ -708,17 +608,6 @@ namespace Graphics
 					if (sentMsg) sentMsg = false;
 
 					TheCompiler::compileType = TheCompiler::CompileType::compile;
-
-					if (TheCompiler::clangCompile
-						&& !TheCompiler::msvcCompile)
-					{
-						targetCompiler = TargetCompiler::clang;
-					}
-					else if (!TheCompiler::clangCompile
-						&& TheCompiler::msvcCompile)
-					{
-						targetCompiler = TargetCompiler::msvc;
-					}
 
 					if (TheCompiler::releaseCompile
 						&& !TheCompiler::debugCompile)

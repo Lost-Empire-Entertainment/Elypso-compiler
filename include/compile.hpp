@@ -12,8 +12,6 @@ namespace Core
 	public:
 		static inline bool isCompiling;
 
-		static inline bool clangCompile;
-		static inline bool msvcCompile;
 		static inline bool releaseCompile;
 		static inline bool debugCompile;
 

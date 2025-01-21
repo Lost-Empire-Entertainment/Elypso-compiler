@@ -60,9 +60,8 @@ namespace Core
 				case CompileType::clean_rebuild:
 				{
 #ifdef _WIN32
-					string compiler = TheCompiler::clangCompile ? "clang" : "msvc";
 					string buildType = TheCompiler::releaseCompile ? "release" : "debug";
-					command = "cmd /c \"" + builder + "\" cmake " + compiler + " " + buildType + " skipwait";
+					command = "cmd /c \"" + builder + "\" cmake " + buildType + " skipwait";
 #elif __linux__
 					command = "bash \"" + builder + "\" cmake skipwait";
 #endif
@@ -71,9 +70,8 @@ namespace Core
 				case CompileType::compile:
 				{
 #ifdef _WIN32
-					string compiler = TheCompiler::clangCompile ? "clang" : "msvc";
 					string buildType = TheCompiler::releaseCompile ? "release" : "debug";
-					command = "cmd /c \"" + builder + "\" build " + compiler + " " + buildType + " skipwait";
+					command = "cmd /c \"" + builder + "\" build " + buildType + " skipwait";
 #elif __linux__
 					command = "bash \"" + builder + "\" build skipwait";
 #endif
@@ -131,10 +129,9 @@ namespace Core
 		string engineRootFolder = (path(Compiler::projectsPath) / "Elypso-engine" / "Engine").string();
 
 #ifdef _WIN32
-		string targetFolderCompiler = GUI::targetCompiler == GUI::TargetCompiler::clang ? "clang" : "msvc";
 		string targetFolderBuild = GUI::targetVersion == GUI::TargetVersion::release ? "release" : "debug";
-		string fullTargetFolderName = targetFolderCompiler + "-x64-" + targetFolderBuild;
-		string libName = TheCompiler::clangCompile ? "libElypso engine.a" : "Elypso engine.lib";
+		string fullTargetFolderName = "x64-" + targetFolderBuild;
+		string libName = "Elypso engine.lib";
 
 		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / fullTargetFolderName / libName).string();
 		string targetLibPath = (path(engineRootFolder) / libName).string();
