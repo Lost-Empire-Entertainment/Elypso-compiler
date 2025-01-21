@@ -131,7 +131,7 @@ namespace Core
 #ifdef _WIN32
 		string targetFolderBuild = GUI::targetVersion == GUI::TargetVersion::release ? "release" : "debug";
 		string fullTargetFolderName = "x64-" + targetFolderBuild;
-		string libName = "Elypso engine.lib";
+		string libName = targetFolderBuild == "release" ? "Elypso engine.lib" : "Elypso engineD.lib";
 
 		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / fullTargetFolderName / libName).string();
 		string targetLibPath = (path(engineRootFolder) / libName).string();
@@ -145,8 +145,11 @@ namespace Core
 
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
 #elif __linux__
-		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / "libElypso engine.a").string();
-		string targetLibPath = (path(engineRootFolder) / "libElypso engine.a").string();
+		string targetFolderBuild = GUI::targetVersion == GUI::TargetVersion::release ? "release" : "debug";
+		string libName = targetFolderBuild == "release" ? "libElypso engine.a" : "libElypso engineD.a";
+
+		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / libName).string();
+		string targetLibPath = (path(engineRootFolder) / libName).string();
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
 #endif
 	}
