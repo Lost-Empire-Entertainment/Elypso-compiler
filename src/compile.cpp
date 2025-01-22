@@ -132,13 +132,9 @@ namespace Core
 		string targetFolderBuild = GUI::targetVersion == GUI::TargetVersion::release ? "release" : "debug";
 		string fullTargetFolderName = "x64-" + targetFolderBuild;
 		string libName = targetFolderBuild == "release" ? "Elypso engine.lib" : "Elypso engineD.lib";
-		string dllName = targetFolderBuild == "release" ? "Elypso_engine.dll" : "Elypso_engineD.dll";
 
 		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / fullTargetFolderName / libName).string();
 		string targetLibPath = (path(engineRootFolder) / libName).string();
-
-		string originDLLPath = (path(engineLibraryRootFolder) / "out" / "build" / fullTargetFolderName / dllName).string();
-		string targetDLLPath = (path(engineRootFolder) / dllName).string();
 
 		//failed to copy library after compile
 		if (!exists(originLibPath))
@@ -147,28 +143,15 @@ namespace Core
 			Compiler::CreateErrorPopup("Engine library lib failed to compile!");
 		}
 
-		//failed to copy dll after compile
-		if (!exists(originDLLPath))
-		{
-			cout << "origin dll path: " << originDLLPath << "\n";
-			Compiler::CreateErrorPopup("Engine library dll failed to compile!");
-		}
-
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
-		File::CopyFileOrFolder(originDLLPath, targetDLLPath);
 #elif __linux__
 		string targetFolderBuild = GUI::targetVersion == GUI::TargetVersion::release ? "release" : "debug";
 		string libName = targetFolderBuild == "release" ? "libElypso engine.a" : "libElypso engineD.a";
-		string dllName = targetFolderBuild == "release" ? "libElypso_engine.so" : "libElypso_engineD.so";
 
 		string originLibPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / libName).string();
 		string targetLibPath = (path(engineRootFolder) / libName).string();
 
-		string originDLLPath = (path(engineLibraryRootFolder) / "out" / "build" / "x64-release" / dllName).string();
-		string targetDLLPath = (path(engineRootFolder) / dllName).string();
-
 		File::CopyFileOrFolder(originLibPath, targetLibPath);
-		File::CopyFileOrFolder(originDLLPath, targetDLLPath);
 #endif
 	}
 }
