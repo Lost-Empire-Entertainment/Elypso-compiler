@@ -1,4 +1,4 @@
-//Copyright(C) 2024 Lost Empire Entertainment
+//Copyright(C) 2025 Lost Empire Entertainment
 //This program comes with ABSOLUTELY NO WARRANTY.
 //This is free software, and you are welcome to redistribute it under certain conditions.
 //Read LICENSE.md for more information.
@@ -53,7 +53,7 @@ namespace Core
 			CreateErrorPopup((name + " is already running!").c_str());
 		}
 
-		cout << "Copyright (C) Lost Empire Entertainment 2024\n\n";
+		cout << "Copyright (C) Lost Empire Entertainment 2025\n\n";
 
 		cout << "Initializing Elypso compiler...\n";
 
