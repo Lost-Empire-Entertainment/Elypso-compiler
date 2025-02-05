@@ -65,11 +65,6 @@ else()
 	find_package(glfw3 REQUIRED)
 endif()
 
-# Add x11 (linux only)
-if (UNIX)
-	find_package(X11 REQUIRED)
-endif()
-
 # Group external libraries
 add_library(external_libs INTERFACE)
 target_link_libraries(external_libs INTERFACE glad)
@@ -115,9 +110,15 @@ target_include_directories(Elypso_compiler PRIVATE
 )
 
 if (WIN32)
-	target_link_libraries(Elypso_compiler PRIVATE external_libs ${GLFW_LIBRARY_PATH} opengl32 gdi32 user32)
+	target_link_libraries(Elypso_compiler PRIVATE external_libs ${GLFW_LIBRARY_PATH} ${ASSIMP_LIBRARY_PATH} ${ASSIMP_LIBRARY_PATH2})
 else()
-	target_link_libraries(Elypso_compiler PRIVATE external_libs glfw ${X11_LIBRARIES})
+	find_package(Wayland QUIET)
+	find_package(X11 QUIET)
+	if (Wayland_FOUND)
+		target_link_libraries(Elypso_compiler PRIVATE external_libs glfw Wayland::Client)
+	elseif (X11_FOUND)
+		target_link_libraries(Elypso_compiler PRIVATE external_libs glfw ${X11_LIBRARIES})
+	endif()
 endif()
 
 # Define GLFW_INCLUDE_NONE
