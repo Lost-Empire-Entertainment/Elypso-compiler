@@ -160,7 +160,7 @@ namespace Graphics
 			{
 				if (target != Target::Hub)
 				{
-					string windowTitle = "Compiler | Elypso hub" + Render::buildType;
+					string windowTitle = "Compiler 1.1.0 " + Render::buildType + "| Elypso hub";
 					glfwSetWindowTitle(Render::window, windowTitle.c_str());
 
 					output.clear();
@@ -180,7 +180,7 @@ namespace Graphics
 			{
 				if (target != Target::Engine)
 				{
-					string windowTitle = "Compiler | Elypso engine" + Render::buildType;
+					string windowTitle = "Compiler 1.1.0 " + Render::buildType + "| Elypso engine";
 					glfwSetWindowTitle(Render::window, windowTitle.c_str());
 
 					output.clear();

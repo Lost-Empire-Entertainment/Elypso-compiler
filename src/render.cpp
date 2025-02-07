@@ -54,7 +54,7 @@ namespace Graphics
 #endif
 
 		//create a window object holding all the windowing data
-		string name = "Compiler | Elypso hub" + buildType;
+		string name = "Compiler 1.1.0 " + Render::buildType + "| Elypso hub";
 		window = glfwCreateWindow(
 			1024,
 			768,
