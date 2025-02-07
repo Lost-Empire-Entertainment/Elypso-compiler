@@ -5,16 +5,21 @@
 
 #pragma once
 
+#include <string>
+
 #include "glfw3.h"
 #include "glm.hpp"
 
 namespace Graphics
 {
+	using std::string;
 	using glm::vec3;
 
 	class Render
 	{
 	public:
+		static inline string buildType;
+
 		static inline GLFWwindow* window;
 		static inline vec3 backgroundColor = vec3(0.1f, 0.1f, 0.1f);
 

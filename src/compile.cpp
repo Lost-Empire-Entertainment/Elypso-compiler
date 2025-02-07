@@ -55,27 +55,32 @@ namespace Core
 
 				string command = "";
 
+				string buildType = TheCompiler::releaseCompile ? "release" : "debug";
 				switch (compileType)
 				{
 				case CompileType::clean_rebuild:
 				{
+					command =
 #ifdef _WIN32
-					string buildType = TheCompiler::releaseCompile ? "release" : "debug";
-					command = "cmd /c \"" + builder + "\" cmake " + buildType + " skipwait";
-#elif __linux__
-					command = "bash \"" + builder + "\" cmake skipwait";
+					"cmd /c \""
+#else
+					"bash \""
 #endif
+					+ builder + "\" cmake " + buildType + " skipwait";
+
 					break;
-				}
+
 				case CompileType::compile:
 				{
+					command =
 #ifdef _WIN32
-					string buildType = TheCompiler::releaseCompile ? "release" : "debug";
-					command = "cmd /c \"" + builder + "\" build " + buildType + " skipwait";
-#elif __linux__
-					command = "bash \"" + builder + "\" build skipwait";
+					"cmd /c \""
+#else
+					"bash \""
 #endif
+					+ builder + "\" build " + buildType + " skipwait";
 					break;
+				}
 				}
 				}
 

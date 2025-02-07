@@ -4,7 +4,6 @@
 //Read LICENSE.md for more information.
 
 #include <iostream>
-#include <string>
 #include <filesystem>
 
 #include "stb_image.h"
@@ -16,7 +15,6 @@
 #include "input.hpp"
 
 using std::cout;
-using std::string;
 using std::filesystem::path;
 
 using Core::Compiler;
@@ -49,8 +47,14 @@ namespace Graphics
 	{
 		cout << "Creating window...\n";
 
+#ifdef NDEBUG
+		buildType = "";
+#else
+		buildType = " [DEBUG]";
+#endif
+
 		//create a window object holding all the windowing data
-		string name = "Compiler | Elypso hub";
+		string name = "Compiler | Elypso hub" + buildType;
 		window = glfwCreateWindow(
 			1024,
 			768,
