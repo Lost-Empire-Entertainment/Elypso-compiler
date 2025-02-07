@@ -43,6 +43,13 @@ namespace Core
 {
 	void Compiler::MainInitialize()
 	{
+		version = "Pre-release 1.1.0.0001";
+#ifdef NDEBUG
+		isDebug = false;
+#else
+		isDebug = true;
+#endif
+
 #ifdef _WIN32
 		string name = "Elypso compiler.exe";
 #elif __linux__

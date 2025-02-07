@@ -47,18 +47,14 @@ namespace Graphics
 	{
 		cout << "Creating window...\n";
 
-#ifdef NDEBUG
-		buildType = "";
-#else
-		buildType = " [DEBUG]";
-#endif
-
 		//create a window object holding all the windowing data
-		string name = "Compiler 1.1.0 " + Render::buildType + "| Elypso hub";
+		string windowTitle = Compiler::isDebug
+			? "Elypso compiler " + Compiler::version + " [DEBUG]"
+			: " Elypso compiler " + Compiler::version;
 		window = glfwCreateWindow(
 			1024,
 			768,
-			name.c_str(),
+			windowTitle.c_str(),
 			NULL,
 			NULL);
 

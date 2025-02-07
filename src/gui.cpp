@@ -160,9 +160,6 @@ namespace Graphics
 			{
 				if (target != Target::Hub)
 				{
-					string windowTitle = "Compiler 1.1.0 " + Render::buildType + "| Elypso hub";
-					glfwSetWindowTitle(Render::window, windowTitle.c_str());
-
 					output.clear();
 
 					string msg = "---- Switched to Elypso hub compilation.";
@@ -180,9 +177,6 @@ namespace Graphics
 			{
 				if (target != Target::Engine)
 				{
-					string windowTitle = "Compiler 1.1.0 " + Render::buildType + "| Elypso engine";
-					glfwSetWindowTitle(Render::window, windowTitle.c_str());
-
 					output.clear();
 
 					string msg = "---- Switched to Elypso engine compilation.";
@@ -248,63 +242,65 @@ namespace Graphics
 			if (ImGui::Button("Set path", smallButtonSize))
 			{
 				string setPath = File::SetPath();
-
-				bool isValidFolder = false;
-				for (const auto& folder : directory_iterator(setPath))
+				if (setPath != "")
 				{
-					string folderName = path(folder).stem().string();
-					if (folderName == "Elypso-engine")
+					bool isValidFolder = false;
+					for (const auto& folder : directory_iterator(setPath))
 					{
-						for (const auto& childFolder : directory_iterator(folder))
+						string folderName = path(folder).stem().string();
+						if (folderName == "Elypso-engine")
 						{
-							string childfolderName = path(childFolder).filename().string();
-							if (childfolderName == "Engine")
+							for (const auto& childFolder : directory_iterator(folder))
 							{
-								isValidFolder = true;
-								break;
+								string childfolderName = path(childFolder).filename().string();
+								if (childfolderName == "Engine")
+								{
+									isValidFolder = true;
+									break;
+								}
 							}
-						}
-						if (isValidFolder) break;
-					}
-				}
-				if (!isValidFolder)
-				{
-					string msg = "---- Cannot set path to '" + setPath + "' because the chosen folder is not used by Elypso engine! Look for the folder where the Elypso-engine folder is inside of.";
-
-					cout << msg << "\n";
-					output.emplace_back(msg);
-				}
-				else
-				{
-					for (const auto& entry : directory_iterator(setPath))
-					{
-						if (path(entry).filename().string() == "Engine")
-						{
-							isValidFolder = true;
-							break;
+							if (isValidFolder) break;
 						}
 					}
-
 					if (!isValidFolder)
 					{
-						string targetName;
-						if (target == Target::Hub) targetName = "Elypso hub";
-						if (target == Target::Engine) targetName = "Elypso engine";
-
-						string msg = "---- Cannot set path to '" + setPath + "' for "
-							+ targetName + " because the chosen folder is not valid!";
+						string msg = "---- Cannot set path to '" + setPath + "' because the chosen folder is not used by Elypso engine! Look for the folder where the Elypso-engine folder is inside of.";
 
 						cout << msg << "\n";
 						output.emplace_back(msg);
 					}
 					else
 					{
-						ConfigFile::SetValue("projectsPath", setPath);
+						for (const auto& entry : directory_iterator(setPath))
+						{
+							if (path(entry).filename().string() == "Engine")
+							{
+								isValidFolder = true;
+								break;
+							}
+						}
 
-						string msg = "---- Set projects folder path to '" + setPath + "'.";
+						if (!isValidFolder)
+						{
+							string targetName;
+							if (target == Target::Hub) targetName = "Elypso hub";
+							if (target == Target::Engine) targetName = "Elypso engine";
 
-						cout << msg << "\n";
-						output.emplace_back(msg);
+							string msg = "---- Cannot set path to '" + setPath + "' for "
+								+ targetName + " because the chosen folder is not valid!";
+
+							cout << msg << "\n";
+							output.emplace_back(msg);
+						}
+						else
+						{
+							ConfigFile::SetValue("projectsPath", setPath);
+
+							string msg = "---- Set projects folder path to '" + setPath + "'.";
+
+							cout << msg << "\n";
+							output.emplace_back(msg);
+						}
 					}
 				}
 			}

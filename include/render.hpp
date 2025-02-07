@@ -18,8 +18,6 @@ namespace Graphics
 	class Render
 	{
 	public:
-		static inline string buildType;
-
 		static inline GLFWwindow* window;
 		static inline vec3 backgroundColor = vec3(0.1f, 0.1f, 0.1f);
 

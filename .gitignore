@@ -2,6 +2,3 @@
 build/
 .vs/
 out/
-
-# Ignore local test and debug files
-build.bat

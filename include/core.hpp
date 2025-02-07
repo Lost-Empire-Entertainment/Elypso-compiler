@@ -14,6 +14,9 @@ namespace Core
 	class Compiler
 	{
 	public:
+		static inline string version;
+		static inline bool isDebug;
+
 		static inline string docsPath;
 		static inline string filesPath;
 		static inline string configFilePath;
