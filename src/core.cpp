@@ -43,11 +43,10 @@ namespace Core
 {
 	void Compiler::MainInitialize()
 	{
-		version = "Pre-release 1.1.0.0001";
 #ifdef NDEBUG
-		isDebug = false;
+		version = "Pre-release 1.1.0.0001";
 #else
-		isDebug = true;
+		version = "Pre-release 1.1.0.0001 [DEBUG]";
 #endif
 
 #ifdef _WIN32

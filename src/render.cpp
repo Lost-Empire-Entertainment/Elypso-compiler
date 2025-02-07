@@ -48,9 +48,7 @@ namespace Graphics
 		cout << "Creating window...\n";
 
 		//create a window object holding all the windowing data
-		string windowTitle = Compiler::isDebug
-			? "Elypso compiler " + Compiler::version + " [DEBUG]"
-			: " Elypso compiler " + Compiler::version;
+		string windowTitle = "Elypso compiler " + Compiler::version;
 		window = glfwCreateWindow(
 			1024,
 			768,
