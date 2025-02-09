@@ -51,7 +51,7 @@ set(EXT_MAGIC_ENUM_DIR "${CMAKE_SOURCE_DIR}/_external_shared/magic_enum")
 set(EXT_STB_IMAGE_DIR "${CMAKE_SOURCE_DIR}/_external_shared/Stb_image")
 
 # Add GLAD
-add_library(glad STATIC ${EXT_GLAD_DIR}/src/glad.c)
+add_library(glad STATIC ${EXT_GLAD_DIR}/glad.c)
 target_include_directories(glad PUBLIC ${EXT_GLAD_DIR}/..)
 
 # Add GLFW
@@ -76,14 +76,14 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
 
 # Add external source files
 list(APPEND SOURCE_FILES
-	${EXT_GLAD_DIR}/src/glad.c
-	${EXT_IMGUI_DIR}/src/imgui.cpp
-	${EXT_IMGUI_DIR}/src/imgui_draw.cpp
-	${EXT_IMGUI_DIR}/src/imgui_impl_glfw.cpp
-	${EXT_IMGUI_DIR}/src/imgui_impl_opengl3.cpp
-	${EXT_IMGUI_DIR}/src/imgui_tables.cpp
-	${EXT_IMGUI_DIR}/src/imgui_widgets.cpp
-	${EXT_STB_IMAGE_DIR}/src/stb_image.cpp
+	${EXT_GLAD_DIR}/glad.c
+	${EXT_IMGUI_DIR}/imgui.cpp
+	${EXT_IMGUI_DIR}/imgui_draw.cpp
+	${EXT_IMGUI_DIR}/imgui_impl_glfw.cpp
+	${EXT_IMGUI_DIR}/imgui_impl_opengl3.cpp
+	${EXT_IMGUI_DIR}/imgui_tables.cpp
+	${EXT_IMGUI_DIR}/imgui_widgets.cpp
+	${EXT_STB_IMAGE_DIR}/stb_image.cpp
 )
 
 # Build as compiler executable
@@ -101,16 +101,16 @@ target_compile_features(Elypso_compiler PRIVATE cxx_std_20)
 
 target_include_directories(Elypso_compiler PRIVATE 
 	${INCLUDE_DIR}
-	${EXT_GLFW_DIR}/include
-	${EXT_GLAD_DIR}/include
-	${EXT_GLM_DIR}/include
-	${EXT_MAGIC_ENUM_DIR}/include
-	${EXT_IMGUI_DIR}/include
-	${EXT_STB_IMAGE_DIR}/include
+	${EXT_GLFW_DIR}
+	${EXT_GLAD_DIR}
+	${EXT_GLM_DIR}
+	${EXT_MAGIC_ENUM_DIR}
+	${EXT_IMGUI_DIR}
+	${EXT_STB_IMAGE_DIR}
 )
 
 if (WIN32)
-	target_link_libraries(Elypso_compiler PRIVATE external_libs ${GLFW_LIBRARY_PATH})
+	target_link_libraries(Elypso_compiler PRIVATE external_libs ${GLFW_LIBRARY_PATH} ${ASSIMP_LIBRARY_PATH} ${ASSIMP_LIBRARY_PATH2})
 else()
 	find_package(Wayland QUIET)
 	find_package(X11 QUIET)
