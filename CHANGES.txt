@@ -2,3 +2,6 @@
 
 - fixed compiler, engine, hub and game not correctly compiling to debug mode
 - added DEBUG window title tag to compiler, engine, hub and game if it compiled in debug mode
+
+1.1.0.0002:
+- if engine and library fail to compile then the compiler only gives a warning popup instead of an error popup

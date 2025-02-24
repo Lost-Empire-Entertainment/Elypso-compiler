@@ -44,9 +44,9 @@ namespace Core
 	void Compiler::MainInitialize()
 	{
 #ifdef NDEBUG
-		version = "Pre-release 1.1.0.0001";
+		version = "Pre-release 1.1.0.0002";
 #else
-		version = "Pre-release 1.1.0.0001 [DEBUG]";
+		version = "Pre-release 1.1.0.0002 [DEBUG]";
 #endif
 
 #ifdef _WIN32
@@ -187,6 +187,29 @@ namespace Core
 
 		//execute the command and return the result
 		return (system(command.c_str()) == 0);
+#endif
+	}
+
+	void Compiler::CreateWarningPopup(const char* warningMessage)
+	{
+		string title = "Elypso Hub Warning";
+
+		cout << "\n"
+			<< "===================="
+			<< "\n"
+			<< "HUB WARNING"
+			<< "\n\n"
+			<< warningMessage
+			<< "\n"
+			<< "===================="
+			<< "\n";
+
+#ifdef _WIN32
+		MessageBoxA(nullptr, warningMessage, title.c_str(), MB_ICONWARNING | MB_OK);
+#elif __linux__
+		string command = "zenity --warning --text=\"" + (string)warningMessage + "\" --title=\"" + title + "\"";
+		int result = system(command.c_str());
+		(void)result;
 #endif
 	}
 

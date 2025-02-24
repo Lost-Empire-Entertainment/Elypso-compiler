@@ -148,7 +148,7 @@ namespace Core
 		if (!exists(originLibPath))
 		{
 			cout << "origin lib path: " << originLibPath << "\n";
-			Compiler::CreateErrorPopup("Engine library lib failed to compile!");
+			Compiler::CreateWarningPopup("Engine library failed to compile!");
 		}
 
 		File::CopyFileOrFolder(originLibPath, targetLibPath);

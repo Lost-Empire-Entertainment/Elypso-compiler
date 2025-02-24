@@ -24,6 +24,7 @@ namespace Core
 		static void MainInitialize();
 
 		static bool IsThisProcessAlreadyRunning(const string& processName);
+		static void CreateWarningPopup(const char* warningMessage);
 		static void CreateErrorPopup(const string& message);
 
 		static void UpdateActivityTime();
