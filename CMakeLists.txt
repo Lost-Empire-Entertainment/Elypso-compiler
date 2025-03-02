@@ -149,34 +149,23 @@ add_custom_command(TARGET Elypso_compiler POST_BUILD
 	$<TARGET_FILE_DIR:Elypso_compiler>/files
 )
 
-# Copy GLFW DLL to the install directory after build
-if (WIN32)
-    set(GLFW_DLL_ORIGIN_BASE "${CMAKE_SOURCE_DIR}/files/external dlls")
-	set(GLFW_DLL_TARGET "$<TARGET_FILE_DIR:Elypso_compiler>/glfw3.dll")
-    if(CMAKE_BUILD_TYPE STREQUAL "Release")
-        set(GLFW_DLL_ORIGIN "${GLFW_DLL_ORIGIN_BASE}/release/glfw3.dll")
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        set(GLFW_DLL_ORIGIN "${GLFW_DLL_ORIGIN_BASE}/debug/glfw3.dll")
-    endif()
-
-    add_custom_command(TARGET Elypso_compiler POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E remove 
-		${GLFW_DLL_TARGET}
-        COMMAND ${CMAKE_COMMAND} -E copy 
-		${GLFW_DLL_ORIGIN}
-		${GLFW_DLL_TARGET}
-    )
+# Copy all DLLs to the install directory after build
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	set(DLL_ORIGIN_DIR "${CMAKE_SOURCE_DIR}/files/external dlls/release")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set(DLL_ORIGIN_DIR "${CMAKE_SOURCE_DIR}/files/external dlls/debug")
 endif()
+set(DLL_TARGET_DIR "$<TARGET_FILE_DIR:Elypso_compiler>")
 
-set(COPY_TARGETS LICENSE.md README.md SECURITY.md LIBRARIES.md)
-foreach(FILE ${COPY_TARGETS})
-  add_custom_command(TARGET Elypso_compiler POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E remove
-	$<TARGET_FILE_DIR:Elypso_compiler>/${FILE}
-	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_SOURCE_DIR}/${FILE}
-	$<TARGET_FILE_DIR:Elypso_compiler>/${FILE}
-  )
+file(GLOB DLL_FILES "${DLL_ORIGIN_DIR}/*")
+	
+foreach(DLL_FILE ${DLL_FILES})
+    get_filename_component(DLL_NAME ${DLL_FILE} NAME)
+    add_custom_command(TARGET Elypso_compiler POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy 
+            ${DLL_FILE} 
+            ${DLL_TARGET_DIR}/${DLL_NAME}
+    )
 endforeach()
 
 # Include CPack to enable packaging
